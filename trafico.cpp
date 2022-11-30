@@ -10,16 +10,27 @@ double dt = 1. / N;
 double X[N][5]; /* Fila tiempo, columna coche*/
 double V[N][5]; /* Fila tiempo, columna coche*/
 
-double k_func(int j, int k){
-    if (j = 1){
-        return v[]
-    }
-}
 
 double rk4(){
-    for (int j = 0; j < N; j++) {
-        for (int i = 0; i < 4; i++){
-            K[i][j] =
+    for (int i = 0; i < N; i++) { /* Para cada t*/
+        for (int j = 1; j < 5; j++){ /* Para cada K y L */
+            if (j == 1){
+                for (int k = 1; k < 5; k++){
+                    K1 = V[i][k];
+                    L1 = f();
+                }
+                /*Que haga lo de K1 y L1*/
+            }
+            else if (j == 2){
+                /*Que haga lo de K2 y L2*/
+            }
+            else if (j == 3){
+                /*Que haga lo de K3 y L3*/
+            }
+            else{
+                /*Que haga lo de  K4 y L4*/
+            }
+
         }
     }
 }
