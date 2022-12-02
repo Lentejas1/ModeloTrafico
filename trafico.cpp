@@ -2,7 +2,7 @@
 #include <iostream>
 
 using namespace ::std;
-#define N 20000 /* N es el número de pasos*/
+#define N 1000 /* N es el número de pasos*/
 
 double m = 1500, l = 4, C = 20000, v = 120 / 3.6;
 double d = 26, t_0 = C / (m * d);
@@ -26,6 +26,7 @@ void respuesta_instantanea(){
         X[0][0]=0;
         for (int j = 1; j < 5; j++){
             X[0][j] = X[0][j-1] - d / d - l / d;
+            V[0][j] = v_norm;
         }
 
 
@@ -37,16 +38,16 @@ void respuesta_instantanea(){
         L[0][2] = v_norm + dt / 2 * L[0][1], L[0][3] = v_norm + dt * L[0][2];
 
         for (int j=1; j<5; j++){
-            K[j][0] = -(V[i][j] - V[i][j-1])/(abs(X[i][j] - X[i][j-1]));
+            K[j][0] = -(V[i][j] - V[i][j-1])/(fabs(X[i][j] - X[i][j-1]));
             L[j][0] = V[i][j];
 
-            K[j][1] = -((V[i][j] + dt*0.5*K[j][0])- (V[i][j-1] + dt*0.5*K[j-1][0]))/(abs((X[i][j] + dt*0.5*L[j][0]) - (X[i][j-1] + dt*0.5*L[j-1][0])));
+            K[j][1] = -((V[i][j] + dt*0.5*K[j][0])- (V[i][j-1] + dt*0.5*K[j-1][0]))/(fabs((X[i][j] + dt*0.5*L[j][0]) - (X[i][j-1] + dt*0.5*L[j-1][0])));
             L[j][1] = V[i][j] + dt*0.5*L[j][0];
 
-            K[j][2] = -((V[i][j] + dt*0.5*K[j][1])- (V[i][j-1] + dt*0.5*K[j-1][1]))/(abs((X[i][j] + dt*0.5*L[j][1]) - (X[i][j-1] + dt*0.5*L[j-1][1])));
+            K[j][2] = -((V[i][j] + dt*0.5*K[j][1])- (V[i][j-1] + dt*0.5*K[j-1][1]))/(fabs((X[i][j] + dt*0.5*L[j][1]) - (X[i][j-1] + dt*0.5*L[j-1][1])));
             L[j][2] = V[i][j] + dt*0.5*L[j][1];
 
-            K[j][3] = -((V[i][j] + dt*K[j][2])- (V[i][j-1] + dt*K[j-1][2]))/(abs((X[i][j] + dt*L[j][2]) - (X[i][j-1] + dt*L[j-1][2])));
+            K[j][3] = -((V[i][j] + dt*K[j][2])- (V[i][j-1] + dt*K[j-1][2]))/(fabs((X[i][j] + dt*L[j][2]) - (X[i][j-1] + dt*L[j-1][2])));
             L[j][3] = V[i][j] + dt*L[j][2];
         }
         for (int k=1; k < 5; k++){
@@ -66,6 +67,8 @@ void respuesta_instantanea(){
 
 }
 int main(){
+    cout << N * t_0;
+
     respuesta_instantanea();
 return 0;
 }
