@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 from matplotlib import animation
 import numpy as np
 import pandas as pd
+
 N = 1000
 path = "C:/Users/minih/Documents/GitHub/ModeloTrafico/cmake-build-debug/Instantaneo.csv"
 
@@ -19,11 +20,11 @@ plt.scatter(time[0], x_2[0])
 plt.scatter(time[0], x_3[0])
 plt.scatter(time[0], x_4[0])
 
-plt.scatter(time[N-1], x_0[N-1])
-plt.scatter(time[N-1], x_1[N-1])
-plt.scatter(time[N-1], x_2[N-1])
-plt.scatter(time[N-1], x_3[N-1])
-plt.scatter(time[N-1], x_4[N-1])
+plt.scatter(time[N - 1], x_0[N - 1])
+plt.scatter(time[N - 1], x_1[N - 1])
+plt.scatter(time[N - 1], x_2[N - 1])
+plt.scatter(time[N - 1], x_3[N - 1])
+plt.scatter(time[N - 1], x_4[N - 1])
 
 plt.plot(time, x_0)
 plt.plot(time, x_1)
@@ -31,12 +32,30 @@ plt.plot(time, x_2)
 plt.plot(time, x_3)
 plt.plot(time, x_4)
 
-
 plt.xlabel("$t$ (s)")
 plt.ylabel("$x$ (m)")
 
 plt.show()
 
+fig, axes = plt.subplots()
+graficar0, = plt.scatter([], [])
+graficar1, = plt.scatter([], [])
+graficar2, = plt.scatter([], [])
+graficar3, = plt.scatter([], [])
+graficar4, = plt.scatter([], [])
+
+
+def funcion():
+    graficar0.set_data(time, x_0)
+    graficar1.set_data(time, x_1)
+    graficar2.set_data(time, x_2)
+    graficar3.set_data(time, x_3)
+    graficar4.set_data(time, x_4)
+
+    return graficar0, graficar1, graficar3, graficar2, graficar4
+
+
+animation.FuncAnimation(fig, funcion, blit=True)
 """# First set up the figure, the axis, and the plot element we want to animate
 fig = plt.figure()
 ax = plt.axes(xlim=(0, 2), ylim=(-2, 2))
