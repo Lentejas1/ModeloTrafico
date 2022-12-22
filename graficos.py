@@ -37,7 +37,7 @@ plt.ylabel("$x$ (m)")
 
 plt.show()
 
-fig, axes = plt.subplots()
+"""fig, axes = plt.subplots()
 graficar0, = plt.scatter([], [])
 graficar1, = plt.scatter([], [])
 graficar2, = plt.scatter([], [])
@@ -55,7 +55,7 @@ def funcion():
     return graficar0, graficar1, graficar3, graficar2, graficar4
 
 
-animation.FuncAnimation(fig, funcion, blit=True)
+animation.FuncAnimation(fig, funcion, blit=True)"""
 """# First set up the figure, the axis, and the plot element we want to animate
 fig = plt.figure()
 ax = plt.axes(xlim=(0, 2), ylim=(-2, 2))
