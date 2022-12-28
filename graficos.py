@@ -2,10 +2,12 @@ import matplotlib.pyplot as plt
 from matplotlib import animation
 import numpy as np
 import pandas as pd
+plt.style.use("science")
 
-N = 1000
+N = 2000
 path = "C:/Users/minih/Documents/GitHub/ModeloTrafico/cmake-build-debug/Instantaneo.csv"
 
+plt.figure(figsize=(6, 4))
 df = pd.read_csv(path)
 time = df["t (s)"]
 x_0 = df[" x_0 (m)"]
@@ -14,23 +16,23 @@ x_2 = df[" x_2 (m)"]
 x_3 = df[" x_3 (m)"]
 x_4 = df[" x_4 (m)"]
 
-plt.scatter(time[0], x_0[0])
-plt.scatter(time[0], x_1[0])
-plt.scatter(time[0], x_2[0])
-plt.scatter(time[0], x_3[0])
-plt.scatter(time[0], x_4[0])
+plt.scatter(time[0], x_0[0], color="red")
+plt.scatter(time[0], x_1[0], color="orange")
+plt.scatter(time[0], x_2[0], color="gold")
+plt.scatter(time[0], x_3[0], color="green")
+plt.scatter(time[0], x_4[0], color="skyblue")
 
-plt.scatter(time[N - 1], x_0[N - 1])
-plt.scatter(time[N - 1], x_1[N - 1])
-plt.scatter(time[N - 1], x_2[N - 1])
-plt.scatter(time[N - 1], x_3[N - 1])
-plt.scatter(time[N - 1], x_4[N - 1])
+plt.scatter(time[N - 1], x_0[N - 1], color="red")
+plt.scatter(time[N - 1], x_1[N - 1], color="orange")
+plt.scatter(time[N - 1], x_2[N - 1], color="gold")
+plt.scatter(time[N - 1], x_3[N - 1], color="green")
+plt.scatter(time[N - 1], x_4[N - 1], color="skyblue")
 
-plt.plot(time, x_0)
-plt.plot(time, x_1)
-plt.plot(time, x_2)
-plt.plot(time, x_3)
-plt.plot(time, x_4)
+plt.plot(time, x_0, color="red")
+plt.plot(time, x_1, color="orange")
+plt.plot(time, x_2, color="gold")
+plt.plot(time, x_3, color="green")
+plt.plot(time, x_4, color="skyblue")
 
 plt.xlabel("$t$ (s)")
 plt.ylabel("$x$ (m)")
@@ -44,6 +46,8 @@ graficar2, = plt.scatter([], [])
 graficar3, = plt.scatter([], [])
 graficar4, = plt.scatter([], [])
 
+Re = 0
+Im = 1
 
 def funcion():
     graficar0.set_data(time, x_0)
