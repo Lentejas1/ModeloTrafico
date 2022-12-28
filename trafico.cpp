@@ -16,29 +16,29 @@ void respuesta_instantanea(){
     int i_norm = int(t_c / dt);
     for (int i=0; i<N-1; i++){ // He cambiado el número de pasos a tres para no petar la consola
         double K[5][4], L[5][4]; /*Filas son coches y columnas K sub algo*/
-        double v_i = v * m / C;
-        //cout << v_i;
-        V[0][0] = v_i;
-        X[0][0] = v_i * i * dt;
+        double v_norm = v * m / C;
+        //cout << v_norm;
+        V[0][0] = v_norm;
+        X[0][0] = 0;
         if (i <= i_norm){
-            X[i+1][0] = v_i * (i + 1) * dt, V[i + 1][0] = v_i;
+            X[i+1][0] = v_norm * (i + 1) * dt, V[i + 1][0] = v_norm;
         }
         else {
-            X[i+1][0] = X[i][0] + 0.2 * v_i * dt, V[i + 1][0] = 0.2 * v_i;
+            X[i+1][0] = X[i][0] + 0.2 * v_norm * dt, V[i + 1][0] = 0.2 * v_norm;
         }
         X[0][0]=0;
         for (int j = 1; j < 5; j++){
             X[0][j] = X[0][j-1] - (l+d) / d;
-            V[0][j] = v_i;
+            V[0][j] = v_norm;
         }
 
 
 
-        K[0][0] = v_i, K[0][1] = 0 + dt / 2 * K[0][0]; // Hay que restar un índice
+        K[0][0] = v_norm, K[0][1] = 0 + dt / 2 * K[0][0]; // Hay que restar un índice
         K[0][2] = 0 + dt / 2 * K[0][1], K[0][3] = dt * K[0][2];
 
-        L[0][0] = v_i, L[0][1] = v_i + dt / 2 * K[0][0];
-        L[0][2] = v_i + dt / 2 * K[0][1], L[0][3] = v_i + dt * K[0][2];
+        L[0][0] = v_norm, L[0][1] = v_norm + dt / 2 * K[0][0];
+        L[0][2] = v_norm + dt / 2 * K[0][1], L[0][3] = v_norm + dt * K[0][2];
         /*cout << "Timestep: " << i << "\n" << endl;
         cout << K[0][0] << "\t" << L[0][0] << "\n" << endl;
         cout << K[0][1] << "\t" << L[0][1] << "\n" << endl;
