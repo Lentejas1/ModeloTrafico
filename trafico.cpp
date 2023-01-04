@@ -7,7 +7,7 @@ using namespace ::std;
 
 double m = 1500, l = 4, C = 20000, v = 120 / 3.6;
 double d = 26, t_0 = C / (m * d);
-double dt = 1. / 2000;
+double dt = 1. / 5000;
 double t_c= 2 * t_0;
 int already_shown = 0;
 
@@ -35,7 +35,7 @@ void respuesta_instantanea(int reaccion){
 
     for (int i=0; i<N-1; i++){
         //Antes del canvio de velocidad
-        if (i <= i_col){
+        if (i < i_col){
             X[i+1][0] = X[i][0] + v_norm * dt;
             V[i+1][0] = v_norm;
 
@@ -76,17 +76,18 @@ void respuesta_instantanea(int reaccion){
             L[0][2] = v_new + dt / 2 * K[0][1];            /*L's del coche 0*/
             L[0][3] = v_new + dt * K[0][2];
 
+
             for (int j=1; j<5; j++){
-                K[j][0] = -(V[i][j] - V[i][j-1-reaccion])/(fabs(X[i][j] - X[i][j-1-reaccion]));
+                K[j][0] = -(V[i][j] - V[i-reaccion][j-1])/(fabs(X[i][j] - X[i-reaccion][j-1]));
                 L[j][0] = V[i][j];
 
-                K[j][1] = -((V[i][j] + dt*0.5*K[j][0]) - (V[i][j-1-reaccion] + dt*0.5*K[j-1][0]))/(fabs((X[i][j] + dt*0.5*L[j][0]) - (X[i][j-1-reaccion] + dt*0.5*L[j-1][0])));
+                K[j][1] = -((V[i][j] + dt*0.5*K[j][0]) - (V[i-reaccion][j-1] + dt*0.5*K[j-1][0]))/(fabs((X[i][j] + dt*0.5*L[j][0]) - (X[i-reaccion][j-1] + dt*0.5*L[j-1][0])));
                 L[j][1] = V[i][j] + dt*0.5*K[j][0];
 
-                K[j][2] = -((V[i][j] + dt*0.5*K[j][1])- (V[i][j-1-reaccion] + dt*0.5*K[j-1][1]))/(fabs((X[i][j] + dt*0.5*L[j][1]) - (X[i][j-1] + dt*0.5*L[j-1-reaccion][1])));
+                K[j][2] = -((V[i][j] + dt*0.5*K[j][1])- (V[i-reaccion][j-1] + dt*0.5*K[j-1][1]))/(fabs((X[i][j] + dt*0.5*L[j][1]) - (X[i-reaccion][j-1] + dt*0.5*L[j-1][1])));
                 L[j][2] = V[i][j] + dt*0.5*K[j][1];
 
-                K[j][3] = -((V[i][j] + dt*K[j][2]) - (V[i][j-1-reaccion] + dt*K[j-1][2]))/(fabs((X[i][j] + dt*L[j][2]) - (X[i][j-1-reaccion] + dt*L[j-1][2])));
+                K[j][3] = -((V[i][j] + dt*K[j][2]) - (V[i-reaccion][j-1] + dt*K[j-1][2]))/(fabs((X[i][j] + dt*L[j][2]) - (X[i-reaccion][j-1] + dt*L[j-1][2])));
                 L[j][3] = V[i][j] + dt*K[j][2];
             }
 
@@ -114,8 +115,8 @@ void respuesta_instantanea(int reaccion){
 
         if (V[i][1]*C/m < 33.2){
             if (already_shown == 0){
-            cout << "El coche 1 empieza a frenar en t="<<i*dt / t_0 << "s\n";
-            already_shown = 1;
+                cout << "El coche 1 empieza a frenar en t="<<i*dt / t_0 << "s\n";
+                already_shown = 1;
             }
         }
     }
@@ -157,7 +158,7 @@ void movimiento_exponencial(int reaccion){
             L[0][3] = v_norm + dt * K[0][2];
 
             for (int j=1; j<5; j++){
-                K[j][0] = -(V[i][j] - V[i][j-1-reaccion])/(fabs(X[i][j] - X[i][j-1-reaccion]));
+                K[j][0] = -(V[i][j] - V[i][j-1])/(fabs(X[i][j] - X[i][j-1]));
                 L[j][0] = V[i][j];
 
                 K[j][1] = -((V[i][j] + dt*0.5*K[j][0]) - (V[i][j-1] + dt*0.5*K[j-1][0]))/(fabs((X[i][j] + dt*0.5*L[j][0]) - (X[i][j-1] + dt*0.5*L[j-1][0])));
@@ -187,16 +188,16 @@ void movimiento_exponencial(int reaccion){
             L[0][3] = v_new + dt * K[0][2];
 
             for (int j=1; j<5; j++){
-                K[j][0] = -(V[i][j] - V[i][j-1-reaccion])/(fabs(X[i][j] - X[i][j-1-reaccion]));
+                K[j][0] = -(V[i][j] - V[i-reaccion][j-1])/(fabs(X[i][j] - X[i-reaccion][j-1]));
                 L[j][0] = V[i][j];
 
-                K[j][1] = -((V[i][j] + dt*0.5*K[j][0]) - (V[i][j-1-reaccion] + dt*0.5*K[j-1][0]))/(fabs((X[i][j] + dt*0.5*L[j][0]) - (X[i][j-1-reaccion] + dt*0.5*L[j-1][0])));
+                K[j][1] = -((V[i][j] + dt*0.5*K[j][0]) - (V[i-reaccion][j-1] + dt*0.5*K[j-1][0]))/(fabs((X[i][j] + dt*0.5*L[j][0]) - (X[i-reaccion][j-1] + dt*0.5*L[j-1][0])));
                 L[j][1] = V[i][j] + dt*0.5*K[j][0];
 
-                K[j][2] = -((V[i][j] + dt*0.5*K[j][1])- (V[i][j-1-reaccion] + dt*0.5*K[j-1][1]))/(fabs((X[i][j] + dt*0.5*L[j][1]) - (X[i][j-1-reaccion] + dt*0.5*L[j-1][1])));
+                K[j][2] = -((V[i][j] + dt*0.5*K[j][1])- (V[i-reaccion][j-1] + dt*0.5*K[j-1][1]))/(fabs((X[i][j] + dt*0.5*L[j][1]) - (X[i-reaccion][j-1] + dt*0.5*L[j-1][1])));
                 L[j][2] = V[i][j] + dt*0.5*K[j][1];
 
-                K[j][3] = -((V[i][j] + dt*K[j][2]) - (V[i][j-1-reaccion] + dt*K[j-1][2]))/(fabs((X[i][j] + dt*L[j][2]) - (X[i][j-1-reaccion] + dt*L[j-1][2])));
+                K[j][3] = -((V[i][j] + dt*K[j][2]) - (V[i-reaccion][j-1] + dt*K[j-1][2]))/(fabs((X[i][j] + dt*L[j][2]) - (X[i-reaccion][j-1] + dt*L[j-1][2])));
                 L[j][3] = V[i][j] + dt*K[j][2];
             }
 
@@ -228,10 +229,10 @@ void movimiento_exponencial(int reaccion){
 
 
 int main(){
-    int reaccion = 100;
+    int reaccion = 0;
     cout << "El tiempo de reaccion es de " << reaccion * dt / t_0 << " s \n";
     respuesta_instantanea(reaccion);
-    movimiento_exponencial(0);
+    movimiento_exponencial(reaccion);
 
     return 0;
 }
