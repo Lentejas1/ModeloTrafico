@@ -5,7 +5,7 @@ import pandas as pd
 
 plt.style.use("science")
 
-N = 2000
+N = 20000
 
 
 def plots(caso):
