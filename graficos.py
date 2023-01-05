@@ -9,8 +9,9 @@ N = 5000
 
 
 def plots(caso):
-    path_x = f"C:/Users/minih/Documents/GitHub/ModeloTrafico/cmake-build-debug/Instantaneo{caso}.csv"
+    path_x = f"C:/Users/minih/Documents/GitHub/ModeloTrafico/cmake-build-debug/Posiciones{caso}.csv"
     path_v = f"C:/Users/minih/Documents/GitHub/ModeloTrafico/cmake-build-debug/Velocidades{caso}.csv"
+
 
     plt.figure(figsize=(6, 4))
     positions = pd.read_csv(path_x)

@@ -11,7 +11,7 @@ double dt = 1. / 500;
 double t_c= 2 * t_0;
 int already_shown = 0;
 
-void respuesta_instantanea(int reaccion){
+void desaceleracion_inmediata(int reaccion){
     double X[N][5];       /* Fila tiempo, columna coche*/
     double V[N][5];       /* Fila tiempo, columna coche*/
     double K[5][4], L[5][4];          /*Filas son coches y columnas K sub algo*/
@@ -99,7 +99,7 @@ void respuesta_instantanea(int reaccion){
     }
 
     FILE* data;
-    data = fopen("Instantaneo1.csv", "w");
+    data = fopen("Posiciones1.csv", "w");
     fprintf(data, "t (s), x_0 (m), x_1 (m), x_2 (m), x_3 (m), x_4 (m)\n");
 
     for (int i = 0; i < N - 1; i++){
@@ -124,7 +124,7 @@ void respuesta_instantanea(int reaccion){
 
 }
 
-void movimiento_exponencial(int reaccion){
+void desaceleracion_exponencial(int reaccion){
     double X[N][5];       /* Fila tiempo, columna coche*/
     double V[N][5];       /* Fila tiempo, columna coche*/
     double K[5][4], L[5][4];          /*Filas son coches y columnas K sub algo*/
@@ -214,7 +214,7 @@ void movimiento_exponencial(int reaccion){
     }
 
     FILE* data;
-    data = fopen("Instantaneo2.csv", "w");
+    data = fopen("Posiciones2.csv", "w");
     fprintf(data, "t (s), x_0 (m), x_1 (m), x_2 (m), x_3 (m), x_4 (m)\n");
 
     for (int i = 0; i < N - 1; i++){
@@ -232,7 +232,7 @@ void movimiento_exponencial(int reaccion){
 
 }
 
-void movimiento_sinusoidal(int reaccion, double omega){
+void desaceleracion_sinusoidal(int reaccion, double omega){
     double X[N][5];       /* Fila tiempo, columna coche*/
     double V[N][5];       /* Fila tiempo, columna coche*/
     double K[5][4], L[5][4];          /*Filas son coches y columnas K sub algo*/
@@ -322,7 +322,7 @@ void movimiento_sinusoidal(int reaccion, double omega){
     }
 
     FILE* data;
-    data = fopen("Instantaneo3.csv", "w");
+    data = fopen("Posiciones3.csv", "w");
     fprintf(data, "t (s), x_0 (m), x_1 (m), x_2 (m), x_3 (m), x_4 (m)\n");
 
     for (int i = 0; i < N - 1; i++){
@@ -341,12 +341,13 @@ void movimiento_sinusoidal(int reaccion, double omega){
 }
 
 int main(){
-    double reaction_time = 0;
+    double reaction_time = 0.5;
     int reaction_steps = floor(reaction_time * t_0 / dt);
     double omega = 1. / 4 * M_PI;
     cout << "El tiempo de reaccion es de " << reaction_time << " s \n";
-    respuesta_instantanea(reaction_steps);
-    movimiento_sinusoidal(reaction_steps, omega);
+    desaceleracion_inmediata(reaction_steps);
+    desaceleracion_exponencial(reaction_steps);
+    desaceleracion_sinusoidal(reaction_steps, omega);
 
     return 0;
 }
