@@ -27,7 +27,6 @@
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/ModeloTrafico.dir/trafico.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/ModeloTrafico.dir/trafico.cpp.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/ModeloTrafico.exe" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/ModeloTrafico.exe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graficos.py" beforeDir="false" afterPath="$PROJECT_DIR$/graficos.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/trafico.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/trafico.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -133,7 +132,7 @@
       <workItem from="1672396994543" duration="349000" />
       <workItem from="1672842457540" duration="6712000" />
       <workItem from="1672857592675" duration="1480000" />
-      <workItem from="1672905759313" duration="4237000" />
+      <workItem from="1672905759313" duration="5254000" />
     </task>
     <task id="LOCAL-00001" summary=".">
       <created>1669822998889</created>
@@ -212,7 +211,14 @@
       <option name="project" value="LOCAL" />
       <updated>1672849133844</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="En el instantáneo sigue sin haber frenada instantánea.&#10;&#10;Tiempo de reacción añadido.">
+      <created>1672910323660</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1672910323660</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

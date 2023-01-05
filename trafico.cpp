@@ -286,14 +286,15 @@ void movimiento_sinusoidal(int reaccion, double omega){
         }
             //Despues del cambio de velocidad
         else {
-            double v_new = v_norm*(-1.6*sin(omega*(i*dt-t_c))*cos(omega*(i*dt-t_c))*omega);
+            double v_new = v_norm * (1-0.8*pow(sin(omega*(i*dt-t_c)),2));
+            double a_new = v_norm*(-1.6*sin(omega*(i*dt-t_c))*cos(omega*(i*dt-t_c))*omega);
             X[i+1][0] = X[i][0] + v_new * dt;
             V[i+1][0] = v_new;
 
-            K[0][0] = v_new;
-            K[0][1] = v_new + dt/2 * K[0][0];
-            K[0][2] = v_new + dt/2 * K[0][1];
-            K[0][3] = v_new + dt * K[0][2];
+            K[0][0] = a_new;
+            K[0][1] = a_new + dt/2 * K[0][0];
+            K[0][2] = a_new + dt/2 * K[0][1];
+            K[0][3] = a_new + dt * K[0][2];
             L[0][0] = v_new;
             L[0][1] = v_new + dt / 2 * K[0][0];
             L[0][2] = v_new + dt / 2 * K[0][1];            /*L's del coche 0*/
@@ -340,11 +341,12 @@ void movimiento_sinusoidal(int reaccion, double omega){
 }
 
 int main(){
-    int reaccion = 0;
+    double reaction_time = 0;
+    int reaction_steps = floor(reaction_time * t_0 / dt);
     double omega = 1. / 4 * M_PI;
-    cout << "El tiempo de reaccion es de " << reaccion * dt / t_0 << " s \n";
-    respuesta_instantanea(reaccion);
-    movimiento_sinusoidal(reaccion, omega);
+    cout << "El tiempo de reaccion es de " << reaction_time << " s \n";
+    respuesta_instantanea(reaction_steps);
+    movimiento_sinusoidal(reaction_steps, omega);
 
     return 0;
 }
