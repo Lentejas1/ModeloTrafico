@@ -64,9 +64,6 @@ void desaceleracion_inmediata(int reaccion){
                 X[i+1][k] = X[i][k] + (dt/6)*(L[k][0] + 2*L[k][1] + 2*L[k][2] + L[k][3]);
                 V[i+1][k] = V[i][k] + (dt/6)*(K[k][0] + 2*K[k][1] + 2*K[k][2] + K[k][3]);
             
-            	e_r[i+1][k]=(1/2)*(pow(V[0][k] , 2) - pow(V[i+1][k] , 2) -(V[i+1][k] - V[i+1][k - 1]) / (fabs(X[i+1][k] - X[i+1][k - 1]))*(dt/3)*(L[k][0] + 2*L[k][1] + 2*L[k][2] + L[k][3]))*(pow( C, 2) /m);
-            e_r[i+1][0]=(1/2)*(pow(V[0][0] , 2) - pow(V[i+1][0] , 2) -(V[i+1][k] - V[i+1][k - 1]) / (fabs(X[i+1][k] - X[i+1][k - 1]))*(dt/3)*(L[0][0] + 2*L[0][1] + 2*L[0][2] + L[0][3]))*(pow( C, 2) / m);
-            
             }
         }
             //Despues del cambio de velocidad
@@ -98,8 +95,7 @@ void desaceleracion_inmediata(int reaccion){
             for (int k=1; k < 5; k++){
                 X[i+1][k] = X[i][k] + (dt/6)*(L[k][0] + 2*L[k][1] + 2*L[k][2] + L[k][3]);
                 V[i+1][k] = V[i][k] + (dt/6)*(K[k][0] + 2*K[k][1] + 2*K[k][2] + K[k][3]);
-            	e_r[i+1][k]=(1/2)*(pow(V[0][k] , 2) - pow( V[i+1][k] , 2) -(V[i+1][k] - V[i+1][k - 1]) / (fabs(X[i+1][k] - X[i+1][k - 1]))*(dt/3)*(L[k][0] + 2*L[k][1] + 2*L[k][2] + L[k][3]))*(pow( C, 2) / m);
-            e_r[i+1][0]=(1/2)*(pow(V[0][0] , 2) - pow( V[i+1][0] , 2) -(V[i+1][k] - V[i+1][k - 1]) / (fabs(X[i+1][k] - X[i+1][k - 1]))*(dt/3)*(L[0][0] + 2*L[0][1] + 2*L[0][2] + L[0][3]))*(pow( C, 2) / m);
+            	e_r[i+1][k] = (1/2*pow(V[0][k], 2) - 1/2*pow(V[i+1][k], 2) - dt / 36 *(K[k][0] + 2*K[k][1] + 2*K[k][2]+ K[k][3])*(L[k][0] + 2*L[k][1] + 2*L[k][2]+ L[k][3]))*pow(C, 2)/m;
             }
         }
     }
@@ -130,18 +126,19 @@ void desaceleracion_inmediata(int reaccion){
     
 	FILE* data3;
 	data3 = fopen("Errornum1.csv", "w");
-	fprintf(data3, "t (s), e_0 (J), e_1 (J), e_2 (J), e_3 (J), e_4 (J)\n");
+	fprintf(data3, "t (s), e_1 (J), e_2 (J), e_3 (J), e_4 (J)\n");
 	
 	for (int i = 0; i < N - 1; i++){
-        fprintf(data3, "%lf, %lf, %lf, %lf, %lf, %lf\n", dt*i/t_0, e_r[i][0],e_r[i][1],e_r[i][2],e_r[i][3],e_r[i][4]);
+        fprintf(data3, "%lf, %lf, %lf, %lf, %lf\n", dt*i/t_0,e_r[i][1],e_r[i][2],e_r[i][3],e_r[i][4]);
     }
-    fprintf(data3, "%lf, %lf, %lf, %lf, %lf, %lf\n", dt*(N-1)/t_0, e_r[N-1][0],e_r[N-1][1],e_r[N-1][2],e_r[N-1][3],e_r[N-1][4]);
+    fprintf(data3, "%lf, %lf, %lf, %lf, %lf\n", dt*(N-1)/t_0,e_r[N-1][1],e_r[N-1][2],e_r[N-1][3],e_r[N-1][4]);
 }
 
 void desaceleracion_exponencial(int reaccion){
     double X[N][5];       /* Fila tiempo, columna coche*/
     double V[N][5];       /* Fila tiempo, columna coche*/
     double K[5][4], L[5][4];          /*Filas son coches y columnas K sub algo*/
+    double e_r[N][5];	  /* Fila tiempo, columna coche*/
     int i_col = int(t_c / dt);
     double v_norm = v * m / C;
 
@@ -223,6 +220,7 @@ void desaceleracion_exponencial(int reaccion){
             for (int k=1; k < 5; k++){
                 X[i+1][k] = X[i][k] + (dt/6)*(L[k][0] + 2*L[k][1] + 2*L[k][2] + L[k][3]);
                 V[i+1][k] = V[i][k] + (dt/6)*(K[k][0] + 2*K[k][1] + 2*K[k][2] + K[k][3]);
+                e_r[i+1][k] = (1/2*pow(V[0][k], 2) - 1/2*pow(V[i+1][k], 2) - dt / 36 *(K[k][0] + 2*K[k][1] + 2*K[k][2]+ K[k][3])*(L[k][0] + 2*L[k][1] + 2*L[k][2]+ L[k][3]))*pow(C, 2)/m;
             }
         }
     }
@@ -243,6 +241,16 @@ void desaceleracion_exponencial(int reaccion){
         fprintf(data2, "%lf, %lf, %lf, %lf, %lf, %lf\n", dt*i/t_0, V[i][0]* C/m,V[i][1]* C/m,V[i][2]* C/m,V[i][3]* C/m,V[i][4]* C/m);
     }
     fprintf(data2, "%lf, %lf, %lf, %lf, %lf, %lf", dt*(N-1)/t_0, V[N-1][0]* C/m,V[N-1][1]* C/m,V[N-1][2]* C/m,V[N-1][3]* C/m,V[N-1][4]* C/m);
+    
+    FILE* data3;
+	data3 = fopen("Errornum2.csv", "w");
+	fprintf(data3, "t (s), e_1 (J), e_2 (J), e_3 (J), e_4 (J)\n");
+	
+	for (int i = 0; i < N - 1; i++){
+        fprintf(data3, "%lf, %lf, %lf, %lf, %lf\n", dt*i/t_0,e_r[i][1],e_r[i][2],e_r[i][3],e_r[i][4]);
+    }
+    fprintf(data3, "%lf, %lf, %lf, %lf, %lf\n", dt*(N-1)/t_0,e_r[N-1][1],e_r[N-1][2],e_r[N-1][3],e_r[N-1][4]);
+    
 
 }
 
@@ -250,6 +258,7 @@ void desaceleracion_sinusoidal(int reaccion, double omega){
     double X[N][5];       /* Fila tiempo, columna coche*/
     double V[N][5];       /* Fila tiempo, columna coche*/
     double K[5][4], L[5][4];          /*Filas son coches y columnas K sub algo*/
+    double e_r[N][5];	  /* Fila tiempo, columna coche*/
     int i_col = int(t_c / dt);
     double v_norm = v * m / C;
 
@@ -331,6 +340,7 @@ void desaceleracion_sinusoidal(int reaccion, double omega){
             for (int k=1; k < 5; k++){
                 X[i+1][k] = X[i][k] + (dt/6)*(L[k][0] + 2*L[k][1] + 2*L[k][2] + L[k][3]);
                 V[i+1][k] = V[i][k] + (dt/6)*(K[k][0] + 2*K[k][1] + 2*K[k][2] + K[k][3]);
+                e_r[i+1][k] = (1/2*pow(V[0][k], 2) - 1/2*pow(V[i+1][k], 2) - dt / 36 *(K[k][0] + 2*K[k][1] + 2*K[k][2]+ K[k][3])*(L[k][0] + 2*L[k][1] + 2*L[k][2]+ L[k][3]))*pow(C, 2)/m;
             }
         }
     }
@@ -351,6 +361,15 @@ void desaceleracion_sinusoidal(int reaccion, double omega){
         fprintf(data2, "%lf, %lf, %lf, %lf, %lf, %lf\n", dt*i/t_0, V[i][0]* C/m,V[i][1]* C/m,V[i][2]* C/m,V[i][3]* C/m,V[i][4]* C/m);
     }
     fprintf(data2, "%lf, %lf, %lf, %lf, %lf, %lf", dt*(N-1)/t_0, V[N-1][0]* C/m,V[N-1][1]* C/m,V[N-1][2]* C/m,V[N-1][3]* C/m,V[N-1][4]* C/m);
+    
+    	FILE* data3;
+	data3 = fopen("Errornum3.csv", "w");
+	fprintf(data3, "t (s), e_1 (J), e_2 (J), e_3 (J), e_4 (J)\n");
+	
+	for (int i = 0; i < N - 1; i++){
+        fprintf(data3, "%lf, %lf, %lf, %lf, %lf\n", dt*i/t_0,e_r[i][1],e_r[i][2],e_r[i][3],e_r[i][4]);
+    }
+    fprintf(data3, "%lf, %lf, %lf, %lf, %lf\n", dt*(N-1)/t_0,e_r[N-1][1],e_r[N-1][2],e_r[N-1][3],e_r[N-1][4]);
 
 }
 
