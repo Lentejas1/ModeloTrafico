@@ -74,6 +74,40 @@ build ModeloTrafico.exe: CXX_EXECUTABLE_LINKER__ModeloTrafico_Debug CMakeFiles/M
   TARGET_IMPLIB = libModeloTrafico.dll.a
   TARGET_PDB = ModeloTrafico.exe.dbg
 
+# =============================================================================
+# Object build statements for EXECUTABLE target ModeloTraficoPaco
+
+
+#############################################
+# Order-only phony target for ModeloTraficoPaco
+
+build cmake_object_order_depends_target_ModeloTraficoPaco: phony || CMakeFiles/ModeloTraficoPaco.dir
+
+build CMakeFiles/ModeloTraficoPaco.dir/trafico_Paco.cpp.obj: CXX_COMPILER__ModeloTraficoPaco_Debug C$:/Users/minih/Documents/GitHub/ModeloTrafico/trafico_Paco.cpp || cmake_object_order_depends_target_ModeloTraficoPaco
+  DEP_FILE = CMakeFiles\ModeloTraficoPaco.dir\trafico_Paco.cpp.obj.d
+  FLAGS = -g -std=gnu++14
+  INCLUDES = -IC:/Users/minih/Documents/GitHub/ModeloTrafico/.
+  OBJECT_DIR = CMakeFiles\ModeloTraficoPaco.dir
+  OBJECT_FILE_DIR = CMakeFiles\ModeloTraficoPaco.dir
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target ModeloTraficoPaco
+
+
+#############################################
+# Link the executable ModeloTraficoPaco.exe
+
+build ModeloTraficoPaco.exe: CXX_EXECUTABLE_LINKER__ModeloTraficoPaco_Debug CMakeFiles/ModeloTraficoPaco.dir/trafico_Paco.cpp.obj
+  FLAGS = -g
+  LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  OBJECT_DIR = CMakeFiles\ModeloTraficoPaco.dir
+  POST_BUILD = cd .
+  PRE_LINK = cd .
+  TARGET_FILE = ModeloTraficoPaco.exe
+  TARGET_IMPLIB = libModeloTraficoPaco.dll.a
+  TARGET_PDB = ModeloTraficoPaco.exe.dbg
+
 
 #############################################
 # Utility command for edit_cache
@@ -102,6 +136,8 @@ build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 
 build ModeloTrafico: phony ModeloTrafico.exe
 
+build ModeloTraficoPaco: phony ModeloTraficoPaco.exe
+
 # =============================================================================
 # Folder targets.
 
@@ -110,7 +146,7 @@ build ModeloTrafico: phony ModeloTrafico.exe
 #############################################
 # Folder: C:/Users/minih/Documents/GitHub/ModeloTrafico/cmake-build-debug
 
-build all: phony ModeloTrafico.exe
+build all: phony ModeloTrafico.exe ModeloTraficoPaco.exe
 
 # =============================================================================
 # Built-in targets

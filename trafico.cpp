@@ -46,22 +46,23 @@ void desaceleracion_inmediata(int reaccion){
 
 
             for (int j=1; j<5; j++){
-                K[j][0] = -(V[i][j] - V[i][j - 1]) / (fabs(X[i][j] - X[i][j - 1]));
+                K[j][0] = -(V[i][j] - V[i][j - 1]) / (fabs(X[i][j] - X[i][j - 1] + l/d));
                 L[j][0] = V[i][j];
 
-                K[j][1] = -((V[i][j] + dt*0.5*K[j][0]) - (V[i][j - 1] + dt * 0.5 * K[j - 1][0])) / (fabs((X[i][j] + dt * 0.5 * L[j][0]) - (X[i][j - 1] + dt * 0.5 * L[j - 1][0])));
+                K[j][1] = -((V[i][j] + dt*0.5*K[j][0]) - (V[i][j - 1] + dt * 0.5 * K[j - 1][0])) / (fabs((X[i][j] + dt * 0.5 * L[j][0] + l/d) - (X[i][j - 1] + dt * 0.5 * L[j - 1][0] )));
                 L[j][1] = V[i][j] + dt*0.5*K[j][0];
 
-                K[j][2] = -((V[i][j] + dt*0.5*K[j][1])- (V[i][j - 1] + dt * 0.5 * K[j - 1][1])) / (fabs((X[i][j] + dt * 0.5 * L[j][1]) - (X[i][j - 1] + dt * 0.5 * L[j - 1][1])));
+                K[j][2] = -((V[i][j] + dt*0.5*K[j][1])- (V[i][j - 1] + dt * 0.5 * K[j - 1][1])) / (fabs((X[i][j] + dt * 0.5 * L[j][1] + l/d) - (X[i][j - 1] + dt * 0.5 * L[j - 1][1]  - l/d)));
                 L[j][2] = V[i][j] + dt*0.5*K[j][1];
 
-                K[j][3] = -((V[i][j] + dt*K[j][2]) - (V[i][j - 1] + dt * K[j - 1][2])) / (fabs((X[i][j] + dt * L[j][2]) - (X[i][j - 1] + dt * L[j - 1][2])));
+                K[j][3] = -((V[i][j] + dt*K[j][2]) - (V[i][j - 1] + dt * K[j - 1][2])) / (fabs((X[i][j] + dt * L[j][2] + l/d) - (X[i][j - 1] + dt * L[j - 1][2])  - l/d));
                 L[j][3] = V[i][j] + dt*K[j][2];
             }
 
             for (int k=1; k < 5; k++){
                 X[i+1][k] = X[i][k] + (dt/6)*(L[k][0] + 2*L[k][1] + 2*L[k][2] + L[k][3]);
                 V[i+1][k] = V[i][k] + (dt/6)*(K[k][0] + 2*K[k][1] + 2*K[k][2] + K[k][3]);
+
             }
         }
             //Despues del cambio de velocidad
@@ -78,23 +79,31 @@ void desaceleracion_inmediata(int reaccion){
 
 
             for (int j=1; j<5; j++){
-                K[j][0] = -(V[i][j] - V[i-reaccion][j-1])/(fabs(X[i][j] - X[i-reaccion][j-1]));
+                K[j][0] = -(V[i][j] - V[i-reaccion][j-1])/(fabs(X[i][j] - X[i-reaccion][j-1]  + l/d));
                 L[j][0] = V[i][j];
 
-                K[j][1] = -((V[i][j] + dt*0.5*K[j][0]) - (V[i-reaccion][j-1] + dt*0.5*K[j-1][0]))/(fabs((X[i][j] + dt*0.5*L[j][0]) - (X[i-reaccion][j-1] + dt*0.5*L[j-1][0])));
+                K[j][1] = -((V[i][j] + dt*0.5*K[j][0]) - (V[i-reaccion][j-1] + dt*0.5*K[j-1][0]))/(fabs((X[i][j] + dt*0.5*L[j][0] + l/d) - (X[i-reaccion][j-1] + dt*0.5*L[j-1][0]  - l/d)));
                 L[j][1] = V[i][j] + dt*0.5*K[j][0];
 
-                K[j][2] = -((V[i][j] + dt*0.5*K[j][1])- (V[i-reaccion][j-1] + dt*0.5*K[j-1][1]))/(fabs((X[i][j] + dt*0.5*L[j][1]) - (X[i-reaccion][j-1] + dt*0.5*L[j-1][1])));
+                K[j][2] = -((V[i][j] + dt*0.5*K[j][1])- (V[i-reaccion][j-1] + dt*0.5*K[j-1][1]))/(fabs((X[i][j] + dt*0.5*L[j][1] + l/d) - (X[i-reaccion][j-1] + dt*0.5*L[j-1][1]  - l/d)));
                 L[j][2] = V[i][j] + dt*0.5*K[j][1];
 
-                K[j][3] = -((V[i][j] + dt*K[j][2]) - (V[i-reaccion][j-1] + dt*K[j-1][2]))/(fabs((X[i][j] + dt*L[j][2]) - (X[i-reaccion][j-1] + dt*L[j-1][2])));
+                K[j][3] = -((V[i][j] + dt*K[j][2]) - (V[i-reaccion][j-1] + dt*K[j-1][2]))/(fabs((X[i][j] + dt*L[j][2] + l/d) - (X[i-reaccion][j-1] + dt*L[j-1][2]  - l/d)));
                 L[j][3] = V[i][j] + dt*K[j][2];
             }
 
             for (int k=1; k < 5; k++){
                 X[i+1][k] = X[i][k] + (dt/6)*(L[k][0] + 2*L[k][1] + 2*L[k][2] + L[k][3]);
                 V[i+1][k] = V[i][k] + (dt/6)*(K[k][0] + 2*K[k][1] + 2*K[k][2] + K[k][3]);
-            }
+                        }
+            /*for (int j=1; j < 5; j++){
+                if (X[i+1][j-1]-X[i+1][j] <= l){
+                    cout << "Desaceleracion inmediata:\n";
+                    cout << "Los coches " << j - 1 << " y " << j << " se han chocado en t = " << dt*(i+1)/t_0 << " s\n"
+                         << endl;
+                    break;
+                }
+            }*/
         }
     }
 
@@ -113,12 +122,12 @@ void desaceleracion_inmediata(int reaccion){
     for (int i = 0; i < N - 1; i++){
         fprintf(data2, "%lf, %lf, %lf, %lf, %lf, %lf\n", dt*i/t_0, V[i][0]* C/m,V[i][1]* C/m,V[i][2]* C/m,V[i][3]* C/m,V[i][4]* C/m);
 
-        if (V[i][1]*C/m < 33.2){
+        /*if (V[i][1]*C/m < 33.2){
             if (already_shown == 0){
                 cout << "El coche 1 empieza a frenar en t="<<i*dt / t_0 << "s\n";
                 already_shown = 1;
             }
-        }
+        }*/
     }
     fprintf(data2, "%lf, %lf, %lf, %lf, %lf, %lf", dt*(N-1)/t_0, V[N-1][0]* C/m,V[N-1][1]* C/m,V[N-1][2]* C/m,V[N-1][3]* C/m,V[N-1][4]* C/m);
 
@@ -158,16 +167,16 @@ void desaceleracion_exponencial(int reaccion){
             L[0][3] = v_norm + dt * K[0][2];
 
             for (int j=1; j<5; j++){
-                K[j][0] = -(V[i][j] - V[i][j-1])/(fabs(X[i][j] - X[i][j-1]));
+                K[j][0] = -(V[i][j] - V[i][j-1])/(fabs(X[i][j] - X[i][j-1] + l/d));
                 L[j][0] = V[i][j];
 
-                K[j][1] = -((V[i][j] + dt*0.5*K[j][0]) - (V[i][j-1] + dt*0.5*K[j-1][0]))/(fabs((X[i][j] + dt*0.5*L[j][0]) - (X[i][j-1] + dt*0.5*L[j-1][0])));
+                K[j][1] = -((V[i][j] + dt*0.5*K[j][0]) - (V[i][j-1] + dt*0.5*K[j-1][0]))/(fabs((X[i][j] + dt*0.5*L[j][0] + l/d) - (X[i][j-1] + dt*0.5*L[j-1][0])));
                 L[j][1] = V[i][j] + dt*0.5*K[j][0];
 
-                K[j][2] = -((V[i][j] + dt*0.5*K[j][1])- (V[i][j-1] + dt*0.5*K[j-1][1]))/(fabs((X[i][j] + dt*0.5*L[j][1]) - (X[i][j-1] + dt*0.5*L[j-1][1])));
+                K[j][2] = -((V[i][j] + dt*0.5*K[j][1])- (V[i][j-1] + dt*0.5*K[j-1][1]))/(fabs((X[i][j] + dt*0.5*L[j][1] + l/d) - (X[i][j-1] + dt*0.5*L[j-1][1])));
                 L[j][2] = V[i][j] + dt*0.5*K[j][1];
 
-                K[j][3] = -((V[i][j] + dt*K[j][2]) - (V[i][j-1] + dt*K[j-1][2]))/(fabs((X[i][j] + dt*L[j][2]) - (X[i][j-1] + dt*L[j-1][2])));
+                K[j][3] = -((V[i][j] + dt*K[j][2]) - (V[i][j-1] + dt*K[j-1][2]))/(fabs((X[i][j] + dt*L[j][2] + l/d) - (X[i][j-1] + dt*L[j-1][2])));
                 L[j][3] = V[i][j] + dt*K[j][2];
             }
 
@@ -193,23 +202,32 @@ void desaceleracion_exponencial(int reaccion){
             L[0][3] = v_new + dt * K[0][2];
 
             for (int j=1; j<5; j++){
-                K[j][0] = -(V[i][j] - V[i-reaccion][j-1])/(fabs(X[i][j] - X[i-reaccion][j-1]));
+                K[j][0] = -(V[i][j] - V[i-reaccion][j-1])/(fabs(X[i][j] - X[i-reaccion][j-1] + l/d));
                 L[j][0] = V[i][j];
 
-                K[j][1] = -((V[i][j] + dt*0.5*K[j][0]) - (V[i-reaccion][j-1] + dt*0.5*K[j-1][0]))/(fabs((X[i][j] + dt*0.5*L[j][0]) - (X[i-reaccion][j-1] + dt*0.5*L[j-1][0])));
+                K[j][1] = -((V[i][j] + dt*0.5*K[j][0]) - (V[i-reaccion][j-1] + dt*0.5*K[j-1][0]))/(fabs((X[i][j] + dt*0.5*L[j][0] + l/d) - (X[i-reaccion][j-1] + dt*0.5*L[j-1][0])));
                 L[j][1] = V[i][j] + dt*0.5*K[j][0];
 
-                K[j][2] = -((V[i][j] + dt*0.5*K[j][1])- (V[i-reaccion][j-1] + dt*0.5*K[j-1][1]))/(fabs((X[i][j] + dt*0.5*L[j][1]) - (X[i-reaccion][j-1] + dt*0.5*L[j-1][1])));
+                K[j][2] = -((V[i][j] + dt*0.5*K[j][1])- (V[i-reaccion][j-1] + dt*0.5*K[j-1][1]))/(fabs((X[i][j] + dt*0.5*L[j][1] + l/d) - (X[i-reaccion][j-1] + dt*0.5*L[j-1][1])));
                 L[j][2] = V[i][j] + dt*0.5*K[j][1];
 
-                K[j][3] = -((V[i][j] + dt*K[j][2]) - (V[i-reaccion][j-1] + dt*K[j-1][2]))/(fabs((X[i][j] + dt*L[j][2]) - (X[i-reaccion][j-1] + dt*L[j-1][2])));
+                K[j][3] = -((V[i][j] + dt*K[j][2]) - (V[i-reaccion][j-1] + dt*K[j-1][2]))/(fabs((X[i][j] + dt*L[j][2] + l/d) - (X[i-reaccion][j-1] + dt*L[j-1][2])));
                 L[j][3] = V[i][j] + dt*K[j][2];
             }
 
             for (int k=1; k < 5; k++){
                 X[i+1][k] = X[i][k] + (dt/6)*(L[k][0] + 2*L[k][1] + 2*L[k][2] + L[k][3]);
                 V[i+1][k] = V[i][k] + (dt/6)*(K[k][0] + 2*K[k][1] + 2*K[k][2] + K[k][3]);
+
             }
+            /*for (int j=1; j < 5; j++){
+                if (X[i+1][j-1]-X[i+1][j] <= l){
+                    cout << "Desaceleracion exponencial:\n";
+                    cout << "Los coches " << j - 1 << " y " << j << " se han chocado en t = " << dt*(i+1)/t_0 << " s\n"
+                    << endl;
+                    break;
+                }
+            }*/
         }
     }
 
@@ -266,22 +284,23 @@ void desaceleracion_sinusoidal(int reaccion, double omega){
             L[0][3] = v_norm + dt * K[0][2];
 
             for (int j=1; j<5; j++){
-                K[j][0] = -(V[i][j] - V[i][j-1])/(fabs(X[i][j] - X[i][j-1]));
+                K[j][0] = -(V[i][j] - V[i][j-1])/(fabs(X[i][j] - X[i][j-1] + l/d));
                 L[j][0] = V[i][j];
 
-                K[j][1] = -((V[i][j] + dt*0.5*K[j][0]) - (V[i][j-1] + dt*0.5*K[j-1][0]))/(fabs((X[i][j] + dt*0.5*L[j][0]) - (X[i][j-1] + dt*0.5*L[j-1][0])));
+                K[j][1] = -((V[i][j] + dt*0.5*K[j][0]) - (V[i][j-1] + dt*0.5*K[j-1][0]))/(fabs((X[i][j] + dt*0.5*L[j][0] + l/d) - (X[i][j-1] + dt*0.5*L[j-1][0])));
                 L[j][1] = V[i][j] + dt*0.5*K[j][0];
 
-                K[j][2] = -((V[i][j] + dt*0.5*K[j][1])- (V[i][j-1] + dt*0.5*K[j-1][1]))/(fabs((X[i][j] + dt*0.5*L[j][1]) - (X[i][j-1] + dt*0.5*L[j-1][1])));
+                K[j][2] = -((V[i][j] + dt*0.5*K[j][1])- (V[i][j-1] + dt*0.5*K[j-1][1]))/(fabs((X[i][j] + dt*0.5*L[j][1] + l/d) - (X[i][j-1] + dt*0.5*L[j-1][1])));
                 L[j][2] = V[i][j] + dt*0.5*K[j][1];
 
-                K[j][3] = -((V[i][j] + dt*K[j][2]) - (V[i][j-1] + dt*K[j-1][2]))/(fabs((X[i][j] + dt*L[j][2]) - (X[i][j-1] + dt*L[j-1][2])));
+                K[j][3] = -((V[i][j] + dt*K[j][2]) - (V[i][j-1] + dt*K[j-1][2]))/(fabs((X[i][j] + dt*L[j][2] + l/d) - (X[i][j-1] + dt*L[j-1][2])));
                 L[j][3] = V[i][j] + dt*K[j][2];
             }
 
             for (int k=1; k < 5; k++){
                 X[i+1][k] = X[i][k] + (dt/6)*(L[k][0] + 2*L[k][1] + 2*L[k][2] + L[k][3]);
                 V[i+1][k] = V[i][k] + (dt/6)*(K[k][0] + 2*K[k][1] + 2*K[k][2] + K[k][3]);
+
             }
         }
             //Despues del cambio de velocidad
@@ -304,19 +323,21 @@ void desaceleracion_sinusoidal(int reaccion, double omega){
                 K[j][0] = -(V[i][j] - V[i-reaccion][j-1])/(fabs(X[i][j] - X[i-reaccion][j-1]));
                 L[j][0] = V[i][j];
 
-                K[j][1] = -((V[i][j] + dt*0.5*K[j][0]) - (V[i-reaccion][j-1] + dt*0.5*K[j-1][0]))/(fabs((X[i][j] + dt*0.5*L[j][0]) - (X[i-reaccion][j-1] + dt*0.5*L[j-1][0])));
+                K[j][1] = -((V[i][j] + dt*0.5*K[j][0]) - (V[i-reaccion][j-1] + dt*0.5*K[j-1][0]))/(fabs((X[i][j] + dt*0.5*L[j][0] + l/d) - (X[i-reaccion][j-1] + dt*0.5*L[j-1][0])));
                 L[j][1] = V[i][j] + dt*0.5*K[j][0];
 
-                K[j][2] = -((V[i][j] + dt*0.5*K[j][1])- (V[i-reaccion][j-1] + dt*0.5*K[j-1][1]))/(fabs((X[i][j] + dt*0.5*L[j][1]) - (X[i-reaccion][j-1] + dt*0.5*L[j-1][1])));
+                K[j][2] = -((V[i][j] + dt*0.5*K[j][1])- (V[i-reaccion][j-1] + dt*0.5*K[j-1][1]))/(fabs((X[i][j] + dt*0.5*L[j][1] + l/d) - (X[i-reaccion][j-1] + dt*0.5*L[j-1][1])));
                 L[j][2] = V[i][j] + dt*0.5*K[j][1];
 
-                K[j][3] = -((V[i][j] + dt*K[j][2]) - (V[i-reaccion][j-1] + dt*K[j-1][2]))/(fabs((X[i][j] + dt*L[j][2]) - (X[i-reaccion][j-1] + dt*L[j-1][2])));
+                K[j][3] = -((V[i][j] + dt*K[j][2]) - (V[i-reaccion][j-1] + dt*K[j-1][2]))/(fabs((X[i][j] + dt*L[j][2] + l/d) - (X[i-reaccion][j-1] + dt*L[j-1][2])));
                 L[j][3] = V[i][j] + dt*K[j][2];
             }
 
             for (int k=1; k < 5; k++){
                 X[i+1][k] = X[i][k] + (dt/6)*(L[k][0] + 2*L[k][1] + 2*L[k][2] + L[k][3]);
                 V[i+1][k] = V[i][k] + (dt/6)*(K[k][0] + 2*K[k][1] + 2*K[k][2] + K[k][3]);
+                //cout<< (1/2*pow(V[0][k], 2) - 1/2*pow(V[i+1][k], 2) - dt / 36 *(K[k][0] + 2*K[k][1] + 2*K[k][2]
+                                                                            //    + K[k][3])*(L[k][0] + 2*L[k][1] + 2*L[k][2]+ L[k][3]))*pow(C, 2)/m << "\n";
             }
         }
     }
@@ -341,7 +362,7 @@ void desaceleracion_sinusoidal(int reaccion, double omega){
 }
 
 int main(){
-    double reaction_time = 0.5;
+    double reaction_time = 0.0;
     int reaction_steps = floor(reaction_time * t_0 / dt);
     double omega = 1. / 4 * M_PI;
     cout << "El tiempo de reaccion es de " << reaction_time << " s \n";

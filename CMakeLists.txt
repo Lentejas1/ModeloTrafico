@@ -7,3 +7,6 @@ include_directories(.)
 
 add_executable(ModeloTrafico
         trafico.cpp)
+
+    add_executable(ModeloTraficoPaco
+            trafico_Paco.cpp)

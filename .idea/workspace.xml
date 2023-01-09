@@ -11,6 +11,7 @@
   </component>
   <component name="CMakeRunConfigurationManager">
     <generated>
+      <config projectName="ModeloTrafico" targetName="ModeloTraficoPaco" />
       <config projectName="ModeloTrafico" targetName="ModeloTrafico" />
     </generated>
   </component>
@@ -20,15 +21,22 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d183938d-5787-4c1b-87fb-bc36cde03d06" name="Changes" comment="En el instantáneo sigue sin haber frenada instantánea.&#10;&#10;Tiempo de reacción añadido.">
+    <list default="true" id="d183938d-5787-4c1b-87fb-bc36cde03d06" name="Changes" comment="Calculad el flujo y esas cosas">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/codemodel-v2-f9f329631579e3d46380.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeCache.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeCache.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/ModeloTrafico.dir/trafico.cpp.obj" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/ModeloTrafico.dir/trafico.cpp.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/TargetDirectories.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/TargetDirectories.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/rules.ninja" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/rules.ninja" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/ModeloTrafico.exe" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/ModeloTrafico.exe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graficos.py" beforeDir="false" afterPath="$PROJECT_DIR$/graficos.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/build.ninja" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/build.ninja" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/trafico.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/trafico.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/trafico_Paco.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/trafico_Paco.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,8 +92,13 @@
     &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
   }
 }</component>
-  <component name="RunManager" selected="CMake Application.ModeloTrafico">
+  <component name="RunManager" selected="Python.graficos">
     <configuration name="ModeloTrafico" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ModeloTrafico" TARGET_NAME="ModeloTrafico" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ModeloTrafico" RUN_TARGET_NAME="ModeloTrafico">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ModeloTraficoPaco" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="ModeloTrafico" TARGET_NAME="ModeloTraficoPaco" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="ModeloTrafico" RUN_TARGET_NAME="ModeloTraficoPaco">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -111,6 +124,11 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="CMake Application.ModeloTrafico" />
+      <item itemvalue="CMake Application.ModeloTraficoPaco" />
+      <item itemvalue="Python.graficos" />
+    </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -134,7 +152,12 @@
       <workItem from="1672842457540" duration="6712000" />
       <workItem from="1672857592675" duration="1480000" />
       <workItem from="1672905759313" duration="6579000" />
-      <workItem from="1672928358754" duration="1410000" />
+      <workItem from="1672928358754" duration="1460000" />
+      <workItem from="1672999947122" duration="1467000" />
+      <workItem from="1673200257382" duration="2256000" />
+      <workItem from="1673253680331" duration="624000" />
+      <workItem from="1673257818763" duration="324000" />
+      <workItem from="1673283015577" duration="1857000" />
     </task>
     <task id="LOCAL-00001" summary=".">
       <created>1669822998889</created>
@@ -227,7 +250,14 @@
       <option name="project" value="LOCAL" />
       <updated>1672911341468</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Calculad el flujo y esas cosas">
+      <created>1672929793064</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1672929793064</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -249,6 +279,7 @@
     <MESSAGE value="." />
     <MESSAGE value="En el instantáneo sigue sin haber frenada instantánea.&#10;&#10;Tiempo de reacción añadido (no funciona en el caso exponencial, idk why)." />
     <MESSAGE value="En el instantáneo sigue sin haber frenada instantánea.&#10;&#10;Tiempo de reacción añadido." />
-    <option name="LAST_COMMIT_MESSAGE" value="En el instantáneo sigue sin haber frenada instantánea.&#10;&#10;Tiempo de reacción añadido." />
+    <MESSAGE value="Calculad el flujo y esas cosas" />
+    <option name="LAST_COMMIT_MESSAGE" value="Calculad el flujo y esas cosas" />
   </component>
 </project>
