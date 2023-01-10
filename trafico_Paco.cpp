@@ -1,7 +1,7 @@
 #include <cmath>
 #include <iostream>
 #include <bits/stdc++.h>
-
+D[i+1][k] = 1/(fabs(X[i+1][k] - X[i][k-1] + l/d))
 using namespace ::std;
 #define N 5000 /* N es el número de pasos*/
 
@@ -47,7 +47,7 @@ void desaceleracion_inmediata(int reaccion){
 			
 			
             for (int j=1; j<5; j++){
-                K[j][0] = -(V[i][j] - V[i][j - 1]) / (fabs(X[i][j] - X[i][j - 1] - l/d ));
+                K[j][0] = -(V[i][j] - V[i][j - 1]) / (fabs(X[i][j] - X[i][j - 1] + l/d ));
                 L[j][0] = V[i][j];
 
                 K[j][1] = -((V[i][j] + dt*0.5*K[j][0]) - (V[i][j - 1] + dt * 0.5 * K[j - 1][0])) / (fabs((X[i][j] + dt * 0.5 * L[j][0]) - (X[i][j - 1] + dt * 0.5 * L[j - 1][0]) + l/d ));
@@ -79,7 +79,7 @@ void desaceleracion_inmediata(int reaccion){
             L[0][3] = v_new + dt * K[0][2];
 		
             for (int j=1; j<5; j++){
-                K[j][0] = -(V[i][j] - V[i-reaccion][j-1])/(fabs(X[i][j] - X[i-reaccion][j-1] - l/d ));
+                K[j][0] = -(V[i][j] - V[i-reaccion][j-1])/(fabs(X[i][j] - X[i-reaccion][j-1] + l/d ));
                 L[j][0] = V[i][j];
 
                 K[j][1] = -((V[i][j] + dt*0.5*K[j][0]) - (V[i-reaccion][j-1] + dt*0.5*K[j-1][0]))/(fabs((X[i][j] + dt*0.5*L[j][0]) - (X[i-reaccion][j-1] + dt*0.5*L[j-1][0] ) + l/d ));
@@ -289,7 +289,7 @@ void desaceleracion_sinusoidal(int reaccion, double omega){
             L[0][3] = v_norm + dt * K[0][2];
 
             for (int j=1; j<5; j++){
-                K[j][0] = -(V[i][j] - V[i][j-1])/(fabs(X[i][j] - X[i][j-1]));
+                K[j][0] = -(V[i][j] - V[i][j-1])/(fabs(X[i][j] - X[i][j-1] + l/d));
                 L[j][0] = V[i][j];
 
                 K[j][1] = -((V[i][j] + dt*0.5*K[j][0]) - (V[i][j-1] + dt*0.5*K[j-1][0]))/(fabs((X[i][j] + dt*0.5*L[j][0]) - (X[i][j-1] + dt*0.5*L[j-1][0]) + l/d ));
@@ -305,6 +305,7 @@ void desaceleracion_sinusoidal(int reaccion, double omega){
             for (int k=1; k < 5; k++){
                 X[i+1][k] = X[i][k] + (dt/6)*(L[k][0] + 2*L[k][1] + 2*L[k][2] + L[k][3]);
                 V[i+1][k] = V[i][k] + (dt/6)*(K[k][0] + 2*K[k][1] + 2*K[k][2] + K[k][3]);
+                
             }
         }
             //Despues del cambio de velocidad
