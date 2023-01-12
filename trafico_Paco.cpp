@@ -1,7 +1,7 @@
 #include <cmath>
 #include <iostream>
 #include <bits/stdc++.h>
-D[i+1][k] = 1/(fabs(X[i+1][k] - X[i][k-1] + l/d))
+
 using namespace ::std;
 #define N 5000 /* N es el número de pasos*/
 
@@ -15,6 +15,8 @@ void desaceleracion_inmediata(int reaccion){
     double X[N][5];       /* Fila tiempo, columna coche*/
     double V[N][5];       /* Fila tiempo, columna coche*/
     double K[5][4], L[5][4];          /*Filas son coches y columnas K sub algo*/
+    double D[N];
+    double J[N];
     double e_r[N][5];	  /* Fila tiempo, columna coche*/
     int i_col = int(t_c / dt);
     double v_norm = v * m / C;
@@ -63,7 +65,7 @@ void desaceleracion_inmediata(int reaccion){
             for (int k=1; k < 5; k++){
                 X[i+1][k] = X[i][k] + (dt/6)*(L[k][0] + 2*L[k][1] + 2*L[k][2] + L[k][3]);
                 V[i+1][k] = V[i][k] + (dt/6)*(K[k][0] + 2*K[k][1] + 2*K[k][2] + K[k][3]);
-            
+
             }
         }
             //Despues del cambio de velocidad
@@ -98,6 +100,9 @@ void desaceleracion_inmediata(int reaccion){
             	e_r[i+1][k] = (1/2*pow(V[0][k], 2) - 1/2*pow(V[i+1][k], 2) - dt / 36 *(K[k][0] + 2*K[k][1] + 2*K[k][2]+ K[k][3])*(L[k][0] + 2*L[k][1] + 2*L[k][2]+ L[k][3]))*pow(C, 2)/m;
             }
         }
+    
+    D[i+1]=4/fabs(X[i+1][4] - X[i+1][0]);
+    J[i+1]=D[i+1]*V[i+1][0];
     }
 
     FILE* data;
@@ -132,12 +137,23 @@ void desaceleracion_inmediata(int reaccion){
         fprintf(data3, "%lf, %lf, %lf, %lf, %lf\n", dt*i/t_0,e_r[i][1],e_r[i][2],e_r[i][3],e_r[i][4]);
     }
     fprintf(data3, "%lf, %lf, %lf, %lf, %lf\n", dt*(N-1)/t_0,e_r[N-1][1],e_r[N-1][2],e_r[N-1][3],e_r[N-1][4]);
+    
+    FILE* data4;
+    data4 = fopen("Fluxe1.csv", "w");
+    fprintf(data, "D (pow(m,-1)), J (pow(s,-1))\n");
+
+    for (int i = 0; i < N - 1; i++){
+        fprintf(data4, "%lf, %lf\n", D[i]/d , J[i]/t_0);
+    }
+    fprintf(data4, "%lf, %lf", D[N-1]/d , J[N-1]/t_0);
 }
 
 void desaceleracion_exponencial(int reaccion){
     double X[N][5];       /* Fila tiempo, columna coche*/
     double V[N][5];       /* Fila tiempo, columna coche*/
     double K[5][4], L[5][4];          /*Filas son coches y columnas K sub algo*/
+    double D[N];
+    double J[N];
     double e_r[N][5];	  /* Fila tiempo, columna coche*/
     int i_col = int(t_c / dt);
     double v_norm = v * m / C;
@@ -223,6 +239,9 @@ void desaceleracion_exponencial(int reaccion){
                 e_r[i+1][k] = (1/2*pow(V[0][k], 2) - 1/2*pow(V[i+1][k], 2) - dt / 36 *(K[k][0] + 2*K[k][1] + 2*K[k][2]+ K[k][3])*(L[k][0] + 2*L[k][1] + 2*L[k][2]+ L[k][3]))*pow(C, 2)/m;
             }
         }
+        
+        D[i+1]=4/fabs(X[i+1][4] - X[i+1][0]);
+    	J[i+1]=D[i+1]*V[i+1][0];
     }
 
     FILE* data;
@@ -251,6 +270,15 @@ void desaceleracion_exponencial(int reaccion){
     }
     fprintf(data3, "%lf, %lf, %lf, %lf, %lf\n", dt*(N-1)/t_0,e_r[N-1][1],e_r[N-1][2],e_r[N-1][3],e_r[N-1][4]);
     
+    FILE* data4;
+    data4 = fopen("Fluxe2.csv", "w");
+    fprintf(data, "D (pow(m,-1)), J (pow(s,-1))\n");
+
+    for (int i = 0; i < N - 1; i++){
+        fprintf(data4, "%lf, %lf\n", D[i]/d , J[i]/t_0);
+    }
+    fprintf(data4, "%lf, %lf", D[N-1]/d , J[N-1]/t_0);
+    
 
 }
 
@@ -258,6 +286,8 @@ void desaceleracion_sinusoidal(int reaccion, double omega){
     double X[N][5];       /* Fila tiempo, columna coche*/
     double V[N][5];       /* Fila tiempo, columna coche*/
     double K[5][4], L[5][4];          /*Filas son coches y columnas K sub algo*/
+    double D[N];
+    double J[N];
     double e_r[N][5];	  /* Fila tiempo, columna coche*/
     int i_col = int(t_c / dt);
     double v_norm = v * m / C;
@@ -344,6 +374,9 @@ void desaceleracion_sinusoidal(int reaccion, double omega){
                 e_r[i+1][k] = (1/2*pow(V[0][k], 2) - 1/2*pow(V[i+1][k], 2) - dt / 36 *(K[k][0] + 2*K[k][1] + 2*K[k][2]+ K[k][3])*(L[k][0] + 2*L[k][1] + 2*L[k][2]+ L[k][3]))*pow(C, 2)/m;
             }
         }
+        
+    	D[i+1]=4/fabs(X[i+1][4] - X[i+1][0]);
+    	J[i+1]=D[i+1]*V[i+1][0];
     }
 
     FILE* data;
@@ -371,6 +404,15 @@ void desaceleracion_sinusoidal(int reaccion, double omega){
         fprintf(data3, "%lf, %lf, %lf, %lf, %lf\n", dt*i/t_0,e_r[i][1],e_r[i][2],e_r[i][3],e_r[i][4]);
     }
     fprintf(data3, "%lf, %lf, %lf, %lf, %lf\n", dt*(N-1)/t_0,e_r[N-1][1],e_r[N-1][2],e_r[N-1][3],e_r[N-1][4]);
+    
+    FILE* data4;
+    data4 = fopen("Fluxe3.csv", "w");
+    fprintf(data, "D (pow(m,-1)), J (pow(s,-1))\n");
+
+    for (int i = 0; i < N - 1; i++){
+        fprintf(data4, "%lf, %lf\n", D[i]/d , J[i]/t_0);
+    }
+    fprintf(data4, "%lf, %lf", D[N-1]/d , J[N-1]/t_0);
 
 }
 
