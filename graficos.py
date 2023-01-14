@@ -13,12 +13,14 @@ def plots(caso):
     path_x = f"C:/Users/Francisco Rodríguez/Desktop/ordenar/Universidad/Tercer curso/MN2/C++/TRAFICO/Posiciones{caso}.csv"
     path_v = f"C:/Users/Francisco Rodríguez/Desktop/ordenar/Universidad/Tercer curso/MN2/C++/TRAFICO/Velocidades{caso}.csv"
     path_f = f"C:/Users/Francisco Rodríguez/Desktop/ordenar/Universidad/Tercer curso/MN2/C++/TRAFICO/Fluxe{caso}.csv"
+    path_t = f"C:/Users/Francisco Rodríguez/Desktop/ordenar/Universidad/Tercer curso/MN2/C++/TRAFICO/Errornum{caso}.csv"
 
 
     plt.figure(figsize=(6, 4))
     positions = pd.read_csv(path_x)
     speeds = pd.read_csv(path_v)
     flux = pd.read_csv(path_f)
+    error = pd.read_csv(path_t)
 
     time = positions["t (s)"]
     x_0 = positions[" x_0 (m)"]
@@ -35,6 +37,11 @@ def plots(caso):
     
     D = flux["D (1/m)"]
     J = flux[" J (1/s)"]
+    e1 = error[" e_1 (J)"]
+    e2 = error[" e_2 (J)"]
+    e3 = error[" e_3 (J)"]
+    e4 = error[" e_4 (J)"]
+    time2 = error["t (s)"]
 
     plt.scatter(time[0], x_0[0], color="red", label="Car 0")
     plt.scatter(time[0], x_1[0], color="orange", label="Car 1")
@@ -86,19 +93,38 @@ def plots(caso):
     
     plt.figure(figsize=(6, 4))
 
-    plt.scatter(D[0], J[0], color="red", label="flux")
+    plt.scatter(D[0], J[0], color="blue")
     
 
     plt.scatter(D[N - 1], J[N - 1], color="blue")
 
     plt.plot(D, J, color="blue")
 
-    plt.xlabel("$D$ (1/m)")
-    plt.ylabel("$J$ (1/s)")
-    plt.legend()
+    plt.xlabel(" $D$  ($m^{-1}$)")
+    plt.ylabel("$J$ ($s^{-1}$)")
     plt.show()
     
-    
+    plt.figure(figsize=(6, 4))
+
+    plt.scatter(time2[0], e1[0], color="orange", label="Car 1")
+    plt.scatter(time2[0], e2[0], color="gold", label="Car 2")
+    plt.scatter(time2[0], e3[0], color="green", label="Car 3")
+    plt.scatter(time2[0], e4[0], color="skyblue", label="Car 4")
+
+    plt.scatter(time2[N - 1], e1[N - 1], color="orange")
+    plt.scatter(time2[N - 1], e2[N - 1], color="gold")
+    plt.scatter(time2[N - 1], e3[N - 1], color="green")
+    plt.scatter(time2[N - 1], e4[N - 1], color="skyblue")
+
+    plt.plot(time2, e1, color="orange")
+    plt.plot(time2, e2, color="gold")
+    plt.plot(time2, e3, color="green")
+    plt.plot(time2, e4, color="skyblue")
+
+    plt.xlabel("$t$ (s)")
+    plt.ylabel("$e_r$ (J)")
+    plt.legend()
+    plt.show()
 
 plots(1)
 
