@@ -15,6 +15,8 @@ void desaceleracion_inmediata(int reaccion){
     double X[N][5];       /* Fila tiempo, columna coche*/
     double V[N][5];       /* Fila tiempo, columna coche*/
     double K[5][4], L[5][4];          /*Filas son coches y columnas K sub algo*/
+    double D[N];
+    double J[N];
     double e_r[N][5];	  /* Fila tiempo, columna coche*/
     int i_col = int(t_c / dt);
     double v_norm = v * m / C;
@@ -47,23 +49,23 @@ void desaceleracion_inmediata(int reaccion){
 			
 			
             for (int j=1; j<5; j++){
-                K[j][0] = -(V[i][j] - V[i][j - 1]) / (fabs(X[i][j] - X[i][j - 1]));
+                K[j][0] = -(V[i][j] - V[i][j - 1]) / (fabs(X[i][j] - X[i][j - 1] + l/d ));
                 L[j][0] = V[i][j];
 
-                K[j][1] = -((V[i][j] + dt*0.5*K[j][0]) - (V[i][j - 1] + dt * 0.5 * K[j - 1][0])) / (fabs((X[i][j] + dt * 0.5 * L[j][0]) - (X[i][j - 1] + dt * 0.5 * L[j - 1][0])));
+                K[j][1] = -((V[i][j] + dt*0.5*K[j][0]) - (V[i][j - 1] + dt * 0.5 * K[j - 1][0])) / (fabs((X[i][j] + dt * 0.5 * L[j][0]) - (X[i][j - 1] + dt * 0.5 * L[j - 1][0]) + l/d ));
                 L[j][1] = V[i][j] + dt*0.5*K[j][0];
 
-                K[j][2] = -((V[i][j] + dt*0.5*K[j][1])- (V[i][j - 1] + dt * 0.5 * K[j - 1][1])) / (fabs((X[i][j] + dt * 0.5 * L[j][1]) - (X[i][j - 1] + dt * 0.5 * L[j - 1][1])));
+                K[j][2] = -((V[i][j] + dt*0.5*K[j][1])- (V[i][j - 1] + dt * 0.5 * K[j - 1][1])) / (fabs((X[i][j] + dt * 0.5 * L[j][1]) - (X[i][j - 1] + dt * 0.5 * L[j - 1][1]) + l/d ));
                 L[j][2] = V[i][j] + dt*0.5*K[j][1];
 
-                K[j][3] = -((V[i][j] + dt*K[j][2]) - (V[i][j - 1] + dt * K[j - 1][2])) / (fabs((X[i][j] + dt * L[j][2]) - (X[i][j - 1] + dt * L[j - 1][2])));
+                K[j][3] = -((V[i][j] + dt*K[j][2]) - (V[i][j - 1] + dt * K[j - 1][2])) / (fabs((X[i][j] + dt * L[j][2]) - (X[i][j - 1] + dt * L[j - 1][2]) + l/d ));
                 L[j][3] = V[i][j] + dt*K[j][2];
             }
 
             for (int k=1; k < 5; k++){
                 X[i+1][k] = X[i][k] + (dt/6)*(L[k][0] + 2*L[k][1] + 2*L[k][2] + L[k][3]);
                 V[i+1][k] = V[i][k] + (dt/6)*(K[k][0] + 2*K[k][1] + 2*K[k][2] + K[k][3]);
-            
+
             }
         }
             //Despues del cambio de velocidad
@@ -79,25 +81,28 @@ void desaceleracion_inmediata(int reaccion){
             L[0][3] = v_new + dt * K[0][2];
 		
             for (int j=1; j<5; j++){
-                K[j][0] = -(V[i][j] - V[i-reaccion][j-1])/(fabs(X[i][j] - X[i-reaccion][j-1]));
+                K[j][0] = -(V[i][j] - V[i-reaccion][j-1])/(fabs(X[i][j] - X[i-reaccion][j-1] + l/d ));
                 L[j][0] = V[i][j];
 
-                K[j][1] = -((V[i][j] + dt*0.5*K[j][0]) - (V[i-reaccion][j-1] + dt*0.5*K[j-1][0]))/(fabs((X[i][j] + dt*0.5*L[j][0]) - (X[i-reaccion][j-1] + dt*0.5*L[j-1][0])));
+                K[j][1] = -((V[i][j] + dt*0.5*K[j][0]) - (V[i-reaccion][j-1] + dt*0.5*K[j-1][0]))/(fabs((X[i][j] + dt*0.5*L[j][0]) - (X[i-reaccion][j-1] + dt*0.5*L[j-1][0] ) + l/d ));
                 L[j][1] = V[i][j] + dt*0.5*K[j][0];
 
-                K[j][2] = -((V[i][j] + dt*0.5*K[j][1])- (V[i-reaccion][j-1] + dt*0.5*K[j-1][1]))/(fabs((X[i][j] + dt*0.5*L[j][1]) - (X[i-reaccion][j-1] + dt*0.5*L[j-1][1])));
+                K[j][2] = -((V[i][j] + dt*0.5*K[j][1])- (V[i-reaccion][j-1] + dt*0.5*K[j-1][1]))/(fabs((X[i][j] + dt*0.5*L[j][1]) - (X[i-reaccion][j-1] + dt*0.5*L[j-1][1]) + l/d));
                 L[j][2] = V[i][j] + dt*0.5*K[j][1];
 
-                K[j][3] = -((V[i][j] + dt*K[j][2]) - (V[i-reaccion][j-1] + dt*K[j-1][2]))/(fabs((X[i][j] + dt*L[j][2]) - (X[i-reaccion][j-1] + dt*L[j-1][2])));
+                K[j][3] = -((V[i][j] + dt*K[j][2]) - (V[i-reaccion][j-1] + dt*K[j-1][2]))/(fabs((X[i][j] + dt*L[j][2]) - (X[i-reaccion][j-1] + dt*L[j-1][2]) + l/d ));
                 L[j][3] = V[i][j] + dt*K[j][2];
             }
 
             for (int k=1; k < 5; k++){
                 X[i+1][k] = X[i][k] + (dt/6)*(L[k][0] + 2*L[k][1] + 2*L[k][2] + L[k][3]);
                 V[i+1][k] = V[i][k] + (dt/6)*(K[k][0] + 2*K[k][1] + 2*K[k][2] + K[k][3]);
-            	e_r[i+1][k] = (1/2*pow(V[0][k], 2) - 1/2*pow(V[i+1][k], 2) - dt / 36 *(K[k][0] + 2*K[k][1] + 2*K[k][2]+ K[k][3])*(L[k][0] + 2*L[k][1] + 2*L[k][2]+ L[k][3]))*pow(C, 2)/m;
+            	e_r[i+1][k] = fabs((1/2*pow(V[0][k], 2) - 1/2*pow(V[i+1][k], 2) - dt / 36 *(K[k][0] + 2*K[k][1] + 2*K[k][2]+ K[k][3])*(L[k][0] + 2*L[k][1] + 2*L[k][2]+ L[k][3]))*pow(C, 2)/m);
             }
         }
+    
+    D[i+1]=4/fabs(X[i+1][4] - X[i+1][0]);
+    J[i+1]=D[i+1]*V[i+1][0];
     }
 
     FILE* data;
@@ -132,12 +137,23 @@ void desaceleracion_inmediata(int reaccion){
         fprintf(data3, "%lf, %lf, %lf, %lf, %lf\n", dt*i/t_0,e_r[i][1],e_r[i][2],e_r[i][3],e_r[i][4]);
     }
     fprintf(data3, "%lf, %lf, %lf, %lf, %lf\n", dt*(N-1)/t_0,e_r[N-1][1],e_r[N-1][2],e_r[N-1][3],e_r[N-1][4]);
+    
+    FILE* data4;
+    data4 = fopen("Fluxe1.csv", "w");
+    fprintf(data4, "D (1/m), J (1/s)\n");
+
+    for (int i = 0; i < N - 1; i++){
+        fprintf(data4, "%lf, %lf\n", D[i]/d , J[i]/t_0);
+    }
+    fprintf(data4, "%lf, %lf", D[N-1]/d , J[N-1]/t_0);
 }
 
 void desaceleracion_exponencial(int reaccion){
     double X[N][5];       /* Fila tiempo, columna coche*/
     double V[N][5];       /* Fila tiempo, columna coche*/
     double K[5][4], L[5][4];          /*Filas son coches y columnas K sub algo*/
+    double D[N];
+    double J[N];
     double e_r[N][5];	  /* Fila tiempo, columna coche*/
     int i_col = int(t_c / dt);
     double v_norm = v * m / C;
@@ -169,16 +185,16 @@ void desaceleracion_exponencial(int reaccion){
             L[0][3] = v_norm + dt * K[0][2];
 
             for (int j=1; j<5; j++){
-                K[j][0] = -(V[i][j] - V[i][j-1])/(fabs(X[i][j] - X[i][j-1]));
+                K[j][0] = -(V[i][j] - V[i][j-1])/(fabs(X[i][j] - X[i][j-1] + l/d ));
                 L[j][0] = V[i][j];
 
-                K[j][1] = -((V[i][j] + dt*0.5*K[j][0]) - (V[i][j-1] + dt*0.5*K[j-1][0]))/(fabs((X[i][j] + dt*0.5*L[j][0]) - (X[i][j-1] + dt*0.5*L[j-1][0])));
+                K[j][1] = -((V[i][j] + dt*0.5*K[j][0]) - (V[i][j-1] + dt*0.5*K[j-1][0]))/(fabs((X[i][j] + dt*0.5*L[j][0]) - (X[i][j-1] + dt*0.5*L[j-1][0]) + l/d ));
                 L[j][1] = V[i][j] + dt*0.5*K[j][0];
 
-                K[j][2] = -((V[i][j] + dt*0.5*K[j][1])- (V[i][j-1] + dt*0.5*K[j-1][1]))/(fabs((X[i][j] + dt*0.5*L[j][1]) - (X[i][j-1] + dt*0.5*L[j-1][1])));
+                K[j][2] = -((V[i][j] + dt*0.5*K[j][1])- (V[i][j-1] + dt*0.5*K[j-1][1]))/(fabs((X[i][j] + dt*0.5*L[j][1]) - (X[i][j-1] + dt*0.5*L[j-1][1]) + l/d ));
                 L[j][2] = V[i][j] + dt*0.5*K[j][1];
 
-                K[j][3] = -((V[i][j] + dt*K[j][2]) - (V[i][j-1] + dt*K[j-1][2]))/(fabs((X[i][j] + dt*L[j][2]) - (X[i][j-1] + dt*L[j-1][2])));
+                K[j][3] = -((V[i][j] + dt*K[j][2]) - (V[i][j-1] + dt*K[j-1][2]))/(fabs((X[i][j] + dt*L[j][2]) - (X[i][j-1] + dt*L[j-1][2])+ l/d ));
                 L[j][3] = V[i][j] + dt*K[j][2];
             }
 
@@ -204,25 +220,28 @@ void desaceleracion_exponencial(int reaccion){
             L[0][3] = v_new + dt * K[0][2];
 
             for (int j=1; j<5; j++){
-                K[j][0] = -(V[i][j] - V[i-reaccion][j-1])/(fabs(X[i][j] - X[i-reaccion][j-1]));
+                K[j][0] = -(V[i][j] - V[i-reaccion][j-1])/(fabs(X[i][j] - X[i-reaccion][j-1] + l/d ));
                 L[j][0] = V[i][j];
 
-                K[j][1] = -((V[i][j] + dt*0.5*K[j][0]) - (V[i-reaccion][j-1] + dt*0.5*K[j-1][0]))/(fabs((X[i][j] + dt*0.5*L[j][0]) - (X[i-reaccion][j-1] + dt*0.5*L[j-1][0])));
+                K[j][1] = -((V[i][j] + dt*0.5*K[j][0]) - (V[i-reaccion][j-1] + dt*0.5*K[j-1][0]))/(fabs((X[i][j] + dt*0.5*L[j][0]) - (X[i-reaccion][j-1] + dt*0.5*L[j-1][0]) + l/d ));
                 L[j][1] = V[i][j] + dt*0.5*K[j][0];
 
-                K[j][2] = -((V[i][j] + dt*0.5*K[j][1])- (V[i-reaccion][j-1] + dt*0.5*K[j-1][1]))/(fabs((X[i][j] + dt*0.5*L[j][1]) - (X[i-reaccion][j-1] + dt*0.5*L[j-1][1])));
+                K[j][2] = -((V[i][j] + dt*0.5*K[j][1])- (V[i-reaccion][j-1] + dt*0.5*K[j-1][1]))/(fabs((X[i][j] + dt*0.5*L[j][1]) - (X[i-reaccion][j-1] + dt*0.5*L[j-1][1]) + l/d ));
                 L[j][2] = V[i][j] + dt*0.5*K[j][1];
 
-                K[j][3] = -((V[i][j] + dt*K[j][2]) - (V[i-reaccion][j-1] + dt*K[j-1][2]))/(fabs((X[i][j] + dt*L[j][2]) - (X[i-reaccion][j-1] + dt*L[j-1][2])));
+                K[j][3] = -((V[i][j] + dt*K[j][2]) - (V[i-reaccion][j-1] + dt*K[j-1][2]))/(fabs((X[i][j] + dt*L[j][2]) - (X[i-reaccion][j-1] + dt*L[j-1][2]) + l/d ));
                 L[j][3] = V[i][j] + dt*K[j][2];
             }
 
             for (int k=1; k < 5; k++){
                 X[i+1][k] = X[i][k] + (dt/6)*(L[k][0] + 2*L[k][1] + 2*L[k][2] + L[k][3]);
                 V[i+1][k] = V[i][k] + (dt/6)*(K[k][0] + 2*K[k][1] + 2*K[k][2] + K[k][3]);
-                e_r[i+1][k] = (1/2*pow(V[0][k], 2) - 1/2*pow(V[i+1][k], 2) - dt / 36 *(K[k][0] + 2*K[k][1] + 2*K[k][2]+ K[k][3])*(L[k][0] + 2*L[k][1] + 2*L[k][2]+ L[k][3]))*pow(C, 2)/m;
+                e_r[i+1][k] = fabs((1/2*pow(V[0][k], 2) - 1/2*pow(V[i+1][k], 2) - dt / 36 *(K[k][0] + 2*K[k][1] + 2*K[k][2]+ K[k][3])*(L[k][0] + 2*L[k][1] + 2*L[k][2]+ L[k][3]))*pow(C, 2)/m);
             }
         }
+        
+        D[i+1]=4/fabs(X[i+1][4] - X[i+1][0]);
+    	J[i+1]=D[i+1]*V[i+1][0];
     }
 
     FILE* data;
@@ -251,6 +270,15 @@ void desaceleracion_exponencial(int reaccion){
     }
     fprintf(data3, "%lf, %lf, %lf, %lf, %lf\n", dt*(N-1)/t_0,e_r[N-1][1],e_r[N-1][2],e_r[N-1][3],e_r[N-1][4]);
     
+    FILE* data4;
+    data4 = fopen("Fluxe2.csv", "w");
+    fprintf(data4, "D (1/m), J (1/s)\n");
+
+    for (int i = 0; i < N - 1; i++){
+        fprintf(data4, "%lf, %lf\n", D[i]/d , J[i]/t_0);
+    }
+    fprintf(data4, "%lf, %lf", D[N-1]/d , J[N-1]/t_0);
+    
 
 }
 
@@ -258,6 +286,8 @@ void desaceleracion_sinusoidal(int reaccion, double omega){
     double X[N][5];       /* Fila tiempo, columna coche*/
     double V[N][5];       /* Fila tiempo, columna coche*/
     double K[5][4], L[5][4];          /*Filas son coches y columnas K sub algo*/
+    double D[N];
+    double J[N];
     double e_r[N][5];	  /* Fila tiempo, columna coche*/
     int i_col = int(t_c / dt);
     double v_norm = v * m / C;
@@ -289,22 +319,23 @@ void desaceleracion_sinusoidal(int reaccion, double omega){
             L[0][3] = v_norm + dt * K[0][2];
 
             for (int j=1; j<5; j++){
-                K[j][0] = -(V[i][j] - V[i][j-1])/(fabs(X[i][j] - X[i][j-1]));
+                K[j][0] = -(V[i][j] - V[i][j-1])/(fabs(X[i][j] - X[i][j-1] + l/d));
                 L[j][0] = V[i][j];
 
-                K[j][1] = -((V[i][j] + dt*0.5*K[j][0]) - (V[i][j-1] + dt*0.5*K[j-1][0]))/(fabs((X[i][j] + dt*0.5*L[j][0]) - (X[i][j-1] + dt*0.5*L[j-1][0])));
+                K[j][1] = -((V[i][j] + dt*0.5*K[j][0]) - (V[i][j-1] + dt*0.5*K[j-1][0]))/(fabs((X[i][j] + dt*0.5*L[j][0]) - (X[i][j-1] + dt*0.5*L[j-1][0]) + l/d ));
                 L[j][1] = V[i][j] + dt*0.5*K[j][0];
 
-                K[j][2] = -((V[i][j] + dt*0.5*K[j][1])- (V[i][j-1] + dt*0.5*K[j-1][1]))/(fabs((X[i][j] + dt*0.5*L[j][1]) - (X[i][j-1] + dt*0.5*L[j-1][1])));
+                K[j][2] = -((V[i][j] + dt*0.5*K[j][1])- (V[i][j-1] + dt*0.5*K[j-1][1]))/(fabs((X[i][j] + dt*0.5*L[j][1]) - (X[i][j-1] + dt*0.5*L[j-1][1]) + l/d ));
                 L[j][2] = V[i][j] + dt*0.5*K[j][1];
 
-                K[j][3] = -((V[i][j] + dt*K[j][2]) - (V[i][j-1] + dt*K[j-1][2]))/(fabs((X[i][j] + dt*L[j][2]) - (X[i][j-1] + dt*L[j-1][2])));
+                K[j][3] = -((V[i][j] + dt*K[j][2]) - (V[i][j-1] + dt*K[j-1][2]))/(fabs((X[i][j] + dt*L[j][2]) - (X[i][j-1] + dt*L[j-1][2]) + l/d ));
                 L[j][3] = V[i][j] + dt*K[j][2];
             }
 
             for (int k=1; k < 5; k++){
                 X[i+1][k] = X[i][k] + (dt/6)*(L[k][0] + 2*L[k][1] + 2*L[k][2] + L[k][3]);
                 V[i+1][k] = V[i][k] + (dt/6)*(K[k][0] + 2*K[k][1] + 2*K[k][2] + K[k][3]);
+                
             }
         }
             //Despues del cambio de velocidad
@@ -324,25 +355,28 @@ void desaceleracion_sinusoidal(int reaccion, double omega){
             L[0][3] = v_new + dt * K[0][2];
 
             for (int j=1; j<5; j++){
-                K[j][0] = -(V[i][j] - V[i-reaccion][j-1])/(fabs(X[i][j] - X[i-reaccion][j-1]));
+                K[j][0] = -(V[i][j] - V[i-reaccion][j-1])/(fabs(X[i][j] - X[i-reaccion][j-1] + l/d ));
                 L[j][0] = V[i][j];
 
-                K[j][1] = -((V[i][j] + dt*0.5*K[j][0]) - (V[i-reaccion][j-1] + dt*0.5*K[j-1][0]))/(fabs((X[i][j] + dt*0.5*L[j][0]) - (X[i-reaccion][j-1] + dt*0.5*L[j-1][0])));
+                K[j][1] = -((V[i][j] + dt*0.5*K[j][0]) - (V[i-reaccion][j-1] + dt*0.5*K[j-1][0]))/(fabs((X[i][j] + dt*0.5*L[j][0]) - (X[i-reaccion][j-1] + dt*0.5*L[j-1][0]) + l/d ));
                 L[j][1] = V[i][j] + dt*0.5*K[j][0];
 
-                K[j][2] = -((V[i][j] + dt*0.5*K[j][1])- (V[i-reaccion][j-1] + dt*0.5*K[j-1][1]))/(fabs((X[i][j] + dt*0.5*L[j][1]) - (X[i-reaccion][j-1] + dt*0.5*L[j-1][1])));
+                K[j][2] = -((V[i][j] + dt*0.5*K[j][1])- (V[i-reaccion][j-1] + dt*0.5*K[j-1][1]))/(fabs((X[i][j] + dt*0.5*L[j][1]) - (X[i-reaccion][j-1] + dt*0.5*L[j-1][1]) + l/d ));
                 L[j][2] = V[i][j] + dt*0.5*K[j][1];
 
-                K[j][3] = -((V[i][j] + dt*K[j][2]) - (V[i-reaccion][j-1] + dt*K[j-1][2]))/(fabs((X[i][j] + dt*L[j][2]) - (X[i-reaccion][j-1] + dt*L[j-1][2])));
+                K[j][3] = -((V[i][j] + dt*K[j][2]) - (V[i-reaccion][j-1] + dt*K[j-1][2]))/(fabs((X[i][j] + dt*L[j][2]) - (X[i-reaccion][j-1] + dt*L[j-1][2]) + l/d));
                 L[j][3] = V[i][j] + dt*K[j][2];
             }
 
             for (int k=1; k < 5; k++){
                 X[i+1][k] = X[i][k] + (dt/6)*(L[k][0] + 2*L[k][1] + 2*L[k][2] + L[k][3]);
                 V[i+1][k] = V[i][k] + (dt/6)*(K[k][0] + 2*K[k][1] + 2*K[k][2] + K[k][3]);
-                e_r[i+1][k] = (1/2*pow(V[0][k], 2) - 1/2*pow(V[i+1][k], 2) - dt / 36 *(K[k][0] + 2*K[k][1] + 2*K[k][2]+ K[k][3])*(L[k][0] + 2*L[k][1] + 2*L[k][2]+ L[k][3]))*pow(C, 2)/m;
+                e_r[i+1][k] = fabs((1/2*pow(V[0][k], 2) - 1/2*pow(V[i+1][k], 2) - dt / 36 *(K[k][0] + 2*K[k][1] + 2*K[k][2]+ K[k][3])*(L[k][0] + 2*L[k][1] + 2*L[k][2]+ L[k][3]))*pow(C, 2)/m);
             }
         }
+        
+    	D[i+1]=4/fabs(X[i+1][4] - X[i+1][0]);
+    	J[i+1]=D[i+1]*V[i+1][0];
     }
 
     FILE* data;
@@ -370,6 +404,15 @@ void desaceleracion_sinusoidal(int reaccion, double omega){
         fprintf(data3, "%lf, %lf, %lf, %lf, %lf\n", dt*i/t_0,e_r[i][1],e_r[i][2],e_r[i][3],e_r[i][4]);
     }
     fprintf(data3, "%lf, %lf, %lf, %lf, %lf\n", dt*(N-1)/t_0,e_r[N-1][1],e_r[N-1][2],e_r[N-1][3],e_r[N-1][4]);
+    
+    FILE* data4;
+    data4 = fopen("Fluxe3.csv", "w");
+    fprintf(data4, "D (1/m), J (1/s)\n");
+
+    for (int i = 0; i < N - 1; i++){
+        fprintf(data4, "%lf, %lf\n", D[i]/d , J[i]/t_0);
+    }
+    fprintf(data4, "%lf, %lf", D[N-1]/d , J[N-1]/t_0);
 
 }
 
