@@ -32,18 +32,18 @@ for i in range(h):
         rhoop=rho[i]
         vop=v(rhoop)
         
-print("La velocitat óptima és", vop)
+print("La velocitat óptima és", vop, rhoop, vop*rhoop)
 
 plt.figure(figsize=(6, 4))
-plt.plot(rho/rhocri, v(rho)/vmax,"black") #esta es la de velocidad en función de densidad
+plt.plot(rho/rhocri, v(rho)/vmax,"black", label= r"$J(\rho)$") #esta es la de velocidad en función de densidad
 plt.plot([0,1],[1,1],"black")
-plt.plot(rho/rhocri, (v(rho)*rho)/(vop*rhoop), "blue")
+plt.plot(rho/rhocri, (v(rho)*rho)/(vop*rhoop), "blue", label= r"$v(\rho)$")
 plt.plot([0,1],[0,0.73],"blue")
 plt.plot([rhoop/rhocri, rhoop/rhocri], [0,3],"--", label= r"$\rho_{opt}$")
 plt.ylim(0,1.1)
 plt.plot(rho/rhocri,rho*v(rho)/rhocri*v(rhocri), "--", label= r"$\rho_{max}$")
 plt.plot([1,1],[0,3],"--", label= r"$\rho_{crit}$")
-plt.xlabel(r"$\rho/\rho_{cri}$")
-plt.ylabel(r"$v(\rho)/v_{max}$" " " "y" " " r"$J(v)/J_{max}$")
-plt.legend()
+plt.xlabel(r"$\rho/\rho_{crit}$")
+plt.ylabel(r"$v(\rho)/v_{max}$" " " "y" " " r"$J(\rho)/J_{max}$")
+plt.legend(loc='upper right')
 plt.show()
